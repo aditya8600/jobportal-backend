@@ -2,12 +2,13 @@ services:
   - type: web
     name: jobportal-backend
     env: python
-    buildCommand: ""
-    startCommand: gunicorn jobportal.wsgi:application
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn jobportal.wsgi:application"
     envVars:
-      - key: DJANGO_SECRET_KEY
+      - key: DJANGO_SETTINGS_MODULE
+        value: jobportal.settings
+      - key: PYTHON_VERSION
+        value: 3.11
+      - key: SECRET_KEY
         value: your-secret-key
-      - key: DATABASE_URL
-        fromDatabase:
-          name: jobportal-db
-          property: connectionString
