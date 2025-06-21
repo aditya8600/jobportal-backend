@@ -157,7 +157,8 @@ SIMPLE_JWT = {
     'AUTH_TOKEN_CLASSES':('rest_framework_simplejwt.tokens.AccessToken',),
 }
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173"
+    "http://localhost:5173",
+    "https://jobportal-frontend.netlify.app"
 ]
 
 CORS_ALLOW_HEADERS = list(default_headers) + [
