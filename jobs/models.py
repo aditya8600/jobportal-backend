@@ -11,9 +11,9 @@ class JobPost(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     location= models.CharField(max_length=255)
-    salary = models.DecimalField(max_digits=5, decimal_places=2)
+    salary = models.DecimalField(max_digits=10, decimal_places=2,null=True,blank=True)
     created_at=models.DateTimeField(auto_now_add=True)
-    deadline = models.DateField()
+    deadline = models.DateField(null=True,blank=True )
     
     def __str__(self):
         return self.title

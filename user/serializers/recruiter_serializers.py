@@ -14,5 +14,5 @@ class RecruiterProfileSerializer(serializers.ModelSerializer):
 class JobPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobPost
-        fields = '__all__'
+        fields = ['id', 'title', 'description', 'location',] 
         read_only_fields = ['id','recruiter','created_at']        

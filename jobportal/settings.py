@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+from corsheaders.defaults import default_headers
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,7 +28,10 @@ SECRET_KEY = 'django-insecure-taqi8518k)i!&f(1wik*0*eexpdaog*v@)g_86tlhci)u57$0w
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 # Application definition
@@ -48,6 +53,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+   'corsheaders.middleware.CorsMiddleware',                
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -55,7 +61,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'jobportal.urls'
@@ -133,8 +139,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'user.CustomUser'
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES':(
+    'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny',
     )
 }
 
@@ -145,8 +154,12 @@ SIMPLE_JWT = {
     'ROTATE_REFRESH_TOKEN' : False,
     'BLACKLIST_AFTER_ROTATION': True, 
     'AUTH_HEADER_TYPES':('Bearer',),
-    'AUTH_TAKEN_CLASSES':('rest_framework_simplejwt.tokens.AccessToken',),
+    'AUTH_TOKEN_CLASSES':('rest_framework_simplejwt.tokens.AccessToken',),
 }
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173"
+]
+
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    'authorization',
 ]

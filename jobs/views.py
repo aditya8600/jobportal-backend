@@ -3,15 +3,16 @@ from jobs.models import JobApplication, JobPost
 from jobs.serializers import JobApplicationSerializer, JobPostSerializer
 from user.permissions import IsCandidate
 from user.permissions import IsRecruiter
+from rest_framework.exceptions import ValidationError
 
 class JobApplicationCreateView(generics.CreateAPIView):
     serializer_class = JobApplicationSerializer
     permission_classes = [permissions.IsAuthenticated, IsCandidate]
 
     def perform_create(self, serializer):
-        job_id = self.kwargs.get('job_id')
-        job = JobPost.objects.get(id=job_id)
-        serializer.save(candidate=self.request.user, job=job)
+     job_id = self.kwargs.get('job_id')
+     job = JobPost.objects.get(id=job_id)
+     serializer.save(candidate=self.request.user, job_post=job)
 
 
 class CandidateJobApplicationListView(generics.ListAPIView):
@@ -87,6 +88,9 @@ class RecruiterJobPostListView(generics.ListAPIView):
 
     def get_queryset(self):
         return JobPost.objects.filter(recruiter=self.request.user)
+    
+    def perform_create(self,serializer):
+        serializer.save(recruiter=self.request.user)
 
 
 class RecruiterJobPostUpdateView(generics.UpdateAPIView):

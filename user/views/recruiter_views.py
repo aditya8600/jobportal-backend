@@ -33,7 +33,7 @@ class RecruiterJobPostListCreateView(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated,IsRecruiter] 
     
     def get_queryset(self):
-        return JobPost.objects.filter(recruiters=self.request.user)
+        return JobPost.objects.filter(recruiter=self.request.user)
     
     def perform_create(self,serializer):
         serializer.save(recruiter=self.request.user)  
